@@ -1,0 +1,52 @@
+Mihai Dragos-Andrei
+Grupa 322CB
+
+    In cadrul acestei teme am implementat o apicatie "client-server" ce poate procesa diferite comenzi ce au ca scop
+comunicarea cu un server in internet. Principalele instrumente folosite sunt reprezentate de catre API-ul REST. M-am folosite
+de constructie diferitelor functii, implementate prin protocolul aplicatie HTTP, pentru a posta anumite carti sau pentru a afisa
+,din baza de date a serverului, anumite carti. 
+
+Comenzi implementate:
+
+  -register: aceasta comanda adauga un nou cont in baza de date a serverului prin constructie unei functii POST la url 
+  "/api/v1/tema/auth/register" si un obiect JSON ce contine "username" si "parola" utilizatorului.
+
+  -login: implementarea este asemanatoare cu cea de la comanda register, diferenta fiind reprezentata de url "/api/v1/tema/auth/login".
+In cadrul acestei comenzi am implementat diferite mesaje de eroare bazate pe analiza mesajelor de eroare primite de la server in cazul
+in care nu trimitem datele intr-o forma corecta. Un alt mesaj de eroare este reprezentat de situatia in care incerc sa ma conectez la
+server in program existand un cookie deja. Programul v-a afiza cookie-ul primit de la server pentru acest cont in cazul in care totul
+a mers bine.
+
+  -enter_library: In cadrul acestei comenzi am folosit o functie de tip GET pentru a accesa biblioteca,cu url "/api/v1/tema/library/access".
+Comanda va afisa un mesaj de eroare in cazul in care cookie-ul nu exista un program si v-a intoarce un token valid pentru contul actual
+in cazul in care totul a mers bine.
+
+  -get_books: In cadrul implementarii acestei comenzi am avut nevoie de a construi o comanda REST de tipul GETcu url "/api/v1/tema/library/books".
+In corpul mesajului trimit am introdus si cookie-ul si token-ul primite in urma comenzilor anterioare. In cazul in care nu am 
+un token in sistem voi afisa un mesaj de eroare. Programul va afisa o lista de obiecte JSON cu date despre fiecare carte din sistem, 
+in cazul in care totul a mers bine.
+
+  -get_book/delete_book: In implementarea acestor 2 functii am folosit aproape aceeasi abordare, singura diferenta fiind reprezentata
+de comanda REST trimisa catre server, de tip GET/DELETE. In ambele comenzi am analizat situatia in care este introdus un "id" care nu
+este un integer si afisez un mesaj corespunzator. De asemenea, in cazul in care nu am un token in sistem voi afisa un mesaj de eroare.
+O alta situatie tratata este si cea in care id-ul nu este in baza de date a server-ului. In cazul functie "get" voi afisa o carte cu toate
+datele corespunzatoare si in cazul functie "delete" voi afisa un mesaj pentru situatia in care totul a mers bine.
+
+  -add_book: In cazul acestei comenzi am implmentat o comanda de tim POST. In cazul in care este introdus ca input un "\n" voi 
+introdusce un mesaj de eroare, semn ca user-ul a incarcat sa ocoleasca completarea campului respectiv. In cazul in care este
+introdus un string pentru numarul de pagini este introdus un mesaj de eroare. In cazul in care token-ul este NULL se va afisa un
+mesaj de eroare. In cazul in care totul merge bine se v-a afisa un mesaj de confirmare si se va adauga cartea in sistem.
+
+  -logout: In cazul acestei comenzi am trimis un mesaj de tipul GET catre server. In cazul in care cookie-ul este NULL am afisat
+un mesaj de eroare. In cazul in care totul a mers bine user-ul ar trebui sa fie deconectat de la server si toate datele din sistem
+vor fi initializate cu NULL.
+
+  -exit: Comanda exit scoate user-ul din intregul program.
+
+Precizari:
+  - m-am folosit de scheletul din laboratorul 10;
+  - am conectat la fiecare comanda programul la server cu functia "open_connection()", deoarece in urma observatiilor mi-am dat seama ca
+  pierd conexiunea la server, fara sa imi explic concret motivul din spate;
+  - rolul functiei "printOutPutCommand();" este a a imi afisa rezultatele/erorile pentru fiecare comanda imparte. De asemenea, functia
+  imi initializeaza variabilele "cookie" si "token" atunci cand sunt executate comenzile de "login" respectiv "enter_library";
+  - pentru parsarea datelor JSON m-am folosit de bilbliteca "parson.c" recomandata in cerinta temei;
