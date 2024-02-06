@@ -1,5 +1,4 @@
 # REST-Web-Client
---
 
 In this assignment, I implemented a client-server application capable of processing various commands aimed at communicating with a server on the internet. The primary tools used were the REST API. I utilized the construction of different functions implemented through the HTTP application protocol to post certain books or to display, from the server's database, certain books.
 
